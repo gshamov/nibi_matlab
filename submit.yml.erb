@@ -1,0 +1,33 @@
+<%-
+
+  base_slurm_args = ["--nodes", "1", "--cpus-per-task", "#{num_cores.to_i}", "--ntasks", "1" , "--mem",  sn_mem  + "G" ]
+
+  slurm_args = case node_type
+              when "gpu"
+                base_slurm_args
+              when "cpu"
+                base_slurm_args
+              when "interac"
+                base_slurm_args + ["--partition", "interac"]
+              when "debug"
+                base_slurm_args += ["--partition", "debug"]
+              else
+                base_slurm_args
+              end
+
+-%>
+---
+batch_connect:
+  template: basic
+script:
+  wall_time: "<%= bc_num_hours.to_i * 3600 %>"
+  <%- if node_type =~ /gpu/ && gpus.to_i.positive? -%>
+  gpus_per_node: 1
+  <%- end -%>
+  <%- unless account.blank? -%>
+  accounting_id: <%= account %>
+  <%- end -%>
+  native:
+  <%- slurm_args.each do |arg| %>
+    - "<%= arg %>"
+  <%- end %>

@@ -1,0 +1,91 @@
+---
+cluster:
+  - "nibi-compute"
+form:
+  - matlab_version
+  - matlab_license_string
+  - auto_accounts
+  - bc_num_hours
+  - num_cores
+  - sn_mem
+  - node_type
+  - bc_email_on_started
+attributes:
+  matlab_version:
+    widget: "select"
+    options:
+      - [
+          'matlab/2023b.2', 'matlab/2023b.2',
+        ]
+      - [
+          'matlab/2024b.1', 'matlab/2024b.1',
+        ]
+  #GAS lets stay within StdEnv/2023 which has only newest matlabs
+  matlab_license_string:
+    widget: "text_field"
+    label: "Matlab License"
+    help: |
+      Bring your own Matlab License : enter something like port@your-institutions.license-server.ca 
+      or provide a file under your $HOME/.licenses/matlab.lic
+  num_cores:
+    widget: "number_field"
+    label: "Number of cores"
+    value: 1
+    help: |
+      The minimum and maximum will change based on your choice of cluster
+      and node type.
+    min: 1
+    max: 28
+    step: 1
+  sn_mem:
+    widget: "number_field"
+    label: "Amount of memory (GB)"
+    help: "Amount of memory assigned (typically 4GB per core)"
+    min: 4
+    value: 8
+    max: 128
+    step:  1
+    id: "mem"
+    display: true
+  node_type:
+    widget: select
+    label: "Node type"
+    help: |
+      - **Standard CPU** <br>
+        These are standard HPC machines. Nibi has 192 CPU cores per node.
+      - **GPU Enabled** <br>
+        These are HPC machines with GPUs. Nibi has H100 nodes
+      - **interactive** <br>
+        An interactive partition for short jobs on Nibi, may have oversubscription enabled
+      - **debug** <br>
+        An debug partition for short jobs on Nibi, may have oversubscription enabled
+    options:
+      - [
+          "interactive",     "interac",
+          data-hide-gpus: true,
+          data-min-num-cores-for-cluster-nibi: 1,
+          data-max-num-cores-for-cluster-nibi: 8,
+        ]
+      - [
+          "any gpu",     "gpu",
+          data-min-num-cores-for-cluster-nibi: 1,
+          data-max-num-cores-for-cluster-nibi: 48,
+          data-hide-gpus: dalse,
+        ]
+      - [
+          "debug",   "debug",
+          data-hide-gpus: true,
+          data-min-num-cores-for-cluster-nibi: 1,
+          data-max-num-cores-for-cluster-nibi: 48,
+        ]
+      - [
+          "nibi CPU",   "cpu",
+          data-hide-gpus: true,
+          data-min-num-cores-for-cluster-nibi: 1,
+          data-max-num-cores-for-cluster-nibi: 64,
+        ]
+  gpus:
+    widget: number_field
+    min: 0
+    max: 4
+

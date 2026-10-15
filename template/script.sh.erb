@@ -1,0 +1,28 @@
+#!/bin/bash
+
+module purge
+module restore
+
+module load <%= context.matlab_version %>
+
+#GAS we need a matlab proxy from somewhere
+# module load app_matlab_proxy/0.23.1
+
+cd $HOME
+
+export MATLAB_HOME=$EBROOTMATLAB
+
+#export MLM_LICENSE_FILE="<%= context.matlab_license_string %> "
+export MWI_MPM_LOG_LEVEL="INFO"
+#export MWI_ENABLE_WEB_LOGGING="True"
+export MWI_CUSTOM_MATLAB_ROOT="${MATLAB_HOME}"
+export MWI_PROCESS_START_TIMEOUT="900"
+
+#GAS Matlab server requires a Python package
+module load python/3.11
+
+export PATH=$PATH:/home/gshamov/matlab-proxy/mlp/bin
+source /home/gshamov/matlab-proxy/mlp/bin/activate
+
+matlab-proxy-app
+

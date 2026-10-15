@@ -1,0 +1,9 @@
+---
+name: MATLAB
+category: Interactive Apps
+subcategory: Servers
+role: batch_connect
+description: "This app will launch the [MATLAB] Web UI  browser on the Nibi cluster.\r\nPlease
+  \ setup your [License] first, before using it as documented!\r\n\r\n[License]: https://docs.alliancecan.ca/wiki/MATLAB/en#Using_an_external_license\r\n[MATLAB]:
+  https://www.mathworks.com/products/matlab.html"
+icon: fas://cog
